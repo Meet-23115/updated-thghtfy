@@ -537,7 +537,7 @@ server.get('/account/q',async (req, res)=>{
       }
     })
     var data__ = {data: dataArray}
-     res.cookie('userUid', userUid, {httpOnly:true})
+    //  res.cookie('userUid', userUid, {httpOnly:true})
    await res.send(data__)
 })
 
@@ -843,6 +843,6 @@ server.get('/en/personal', (req, res)=>{
   
 // routes-end
 
-server.listen(process.env.PORT, () => console.log(`server is online`));
+server.listen(process.env.PORT||5999, () => console.log(`server is online`));
 
 
