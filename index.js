@@ -548,7 +548,7 @@ server.get('/account/q',async (req, res)=>{
      // console.log(following);
        await dataArray.push(userInfo);
        res.send(dataArray)
-   })   
+   })
   })
   server.get('/user/thoughts', async (req, res)=>{
     var cookies = req.cookies
@@ -583,15 +583,15 @@ server.post('/user/follow', async(req, res)=>{
  var profileUid = userProfile.profileUid;
 
   const userData =  await db.push(db.ref(db.db, 'users/' + profileId + '/FollowersId/'), ({
-    profileUid:profileUid,
-    profileUserName:userName
+    userUid
    }))
     .catch((error) => {
      const errorCode = error.code;
      const errorMessage = error.message;
    })
    const profielData = await db.push(db.ref(db.db, `users/${userUid}/followingId/`), ({
-    userUid
+    profileUid:profileUid,
+    profileUserName:profileUserName
    })).catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
