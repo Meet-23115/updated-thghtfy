@@ -233,6 +233,7 @@
    
       input.addEventListener('input',async ()=>{
         var value = input.value;
+        var value = value.toLowerCase();
         if(value == ""){
          
           history.innerText = 'History';
