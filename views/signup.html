@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Sign up</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='/main.css'>
+    <script src='/main.js'></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body class="sign_up_body">
+    <header class="sign_up_header">
+        <div class="sign_up_header_logo">
+            <img src="/Resources/thoughtify_logo_white.png"id="sign_up_header_logo">
+        </div>
+    </header>
+    <section id="sign_up_form">
+        <div class="form_holder">
+            <div class="form_heading">
+                <h1>Create your account</h1>        
+            </div>
+           <form id="sign_up_form" method="get" action="/en/addInfo">
+                <div class="sign_up_form_input_holder">
+                    <div class="sign_up_user_name_input">
+                        <input name="username" type="text"placeholder="USER NAME"id="sign_up_user_name_input"required>
+                    </div>
+                    <span id="message">**ALL CHARACTERS SHOULD BE LOWERCASE**</span>
+                    <div class="sign_up_full_name_input">
+                        <input type="text"name="userFullName" id="sign_up_full_name_input"placeholder="FULL NAME" required>
+                    </div>
+                    <div class="sign_up_email_input">
+                        <input type="email"name="userEmail" id="sign_up_email_input" placeholder="E-MAIL" required>
+                    </div>
+                    <div class="sign_up_password_input">
+                        <input type="password"placeholder="PASSWORD"name="user_password" id="sign_up_password_input"value="" required>
+                    </div>
+                    <span id="message">**PASSWORD SHOULD ATLEAST BE OF 8 CHARACTERS AND LESS THEN 15 CHARACTERS**</span>
+                    <div class="sign_up_password_conformation_input">
+                        <input type="password"placeholder="CONFIRM YOUR PASSWORD" id="sign_up_password_conformation_input" required>
+                    </div>
+                    <span id="message2"></span>
+                </div>
+                <input type="button"name="submit"value="SIGN UP" id="sign_up_submit_button"onclick="return signUp()">
+           </form>
+           <p>Already have an account? <a href="/en/login" id="login_link">log in</a></p>
+        </div>
+    </section>
+</body>
+</html>

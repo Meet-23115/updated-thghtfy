@@ -1,0 +1,22 @@
+{
+  "name": "thghtfy",
+  "version": "1.0.0",
+  "description": "this is yet another version",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "MEET GELOTHRA",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.1",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "firebase": "^9.9.3",
+    "firebase-admin": "^11.0.1",
+    "multer": "^1.4.5-lts.1",
+    "sharp": "^0.30.7"
+  }
+}

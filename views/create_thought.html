@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Create a post</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='/main.css'>
+    <script src='/main.js'></script>
+</head>
+<body>
+    <header class="posting_header">
+        <div id="posting_header_logo">
+            <img src="/Resources/thoughtify_logo_white.png"class="posting_header_logo">
+        </div>
+    </header>
+    <section class="posting_header_main_content">
+        <div id="posting_header_main_content_heading">
+            <h1 class="posting_header_main_content_heading">Post your thought</h1>
+        </div>
+        <form id="createThoughtForm" action="/en/home" method="get">
+            <div id="posting_thought">
+                <label for="posting_thought" class="write_your_thought">Write your thought</label>
+                <div class="thought_holder"><input type="text"placeholder="Share your thought here"name="user_content"id="posted_thought"class="posting_thought" required></input></div>
+                <input type="submit" name="submit" id="posting_thought_submit_button"onclick="return upLoadingThought()"value="POST">
+            </div>
+        </form>
+    </section>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>this is log in page</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='/main.css'>
+    <script src='/main.js'></script>
+</head>
+<body id="login_body">
+    <header class="login_header">
+        <img src="/Resources/thghtfy_logo_black.png" id="login_header_image">
+    </header>
+    <div class="login_heading_wrapper">
+        <h1 class="login_heading">LOG IN</h1>
+    </div>
+    <form id="log_in_form"   method="get" action="/en/loginLoading" name="logInForm"  >
+        <div id="log_in_email_holder">
+            <input type="email"placeholder="email"id="log_in_email"name="userEmail"/>
+        </div>
+        <div id="log_in_password_holder">
+            <input type="password" id="log_in_password"placeholder="password"name="userPassword"/>
+        </div>
+        <div class="loginMessageDiv"><span id="loginMessage"></span></div>
+        <div class="logInButtonHolder">
+            <input type="button"value="LOG IN"id="logInButton" onclick="return logIn()" >
+        </div>
+    </form>
+    
+    <div class="sign_up_link_login">
+        <p>Don't have an account? <a id="go_to_sign_up"href="/signUp">SIGN UP</a></p>
+    </div>
+</body>
+</html>

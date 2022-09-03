@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Update dp</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='/main.css'>
+    <script src='/main.js'></script>
+</head>
+<body>
+    <header class="upload_dp_header">
+        <div class="upload_dp_logo"><img src="/Resources/thghtfy_logo_black.png"id="upload_dp_logo"></div>
+    </header>
+    <section class="upload_dp_main_content">
+        <div class="upload_dp_heading">
+            <h1>CHANGE YOUR PROFILE PICTURE</h1>
+        </div>
+       <div id="upload_dp_wrapper">
+            <div id="upload_dp_input_container">
+                <form  method="post"id="upload_dp_form" action="/en/updateDp"enctype="multipart/form-data" >
+                <div class="upload_dp_input_container">
+                    <form action="/en/profile" method="get">
+                        <input class="upload_dp_input" id="photo"name="userDp" accept="image/*" type="file"  onchange="return uploadDp()"   capture >
+                    </form>
+                
+                <label class="upload_dp_label" for="photo">
+                    <img alt="" class="thumb--lg" src="/Resources/profile_picture_example.jpg"height="150px" width="150px">
+                </label>
+                </div></form>
+            </div>
+       </div>
+    </section>
+                       
+</body>
+</html>

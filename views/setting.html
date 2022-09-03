@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>SETTINGS</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='/main.css'>
+    <script src='/main.js'></script>
+</head>
+<body id="settingbody" onload="return settings()">
+    <header id="settingheader" ><h1>SETTINGS</h1></header>
+    <section id="profileSetting">
+                <div id="Sprofile_pic">
+                    <div class="setting_profile_pic"id="profile_user_dp">
+                                <img alt="" class="thumb--lg"id="profile_profile_pic" src="/Resources/profile_picture_example.jpg">
+                    </div>
+                    
+                </div>
+                <div id="change">
+                    <div id="change_button" onclick="return updateDp()" >CHANGE PROFILE PIC
+                    </div>
+                </div>
+                <div id="SuserName">
+                    <h1 id="userNameD"  >UserName</h1>
+                </div>
+                <div id="userNamechange">
+                    <div id="userNameChangeWrapper" >
+                        <div id="username_change_button"onclick="return updateUserName()"  >
+                            CHANGE USER NAME
+                        </div>
+                        <!-- <div id="message"></div> -->
+                    </div>
+                </div>
+
+               
+        </div>
+        <!-- <div id="logOutButton">LOGOUT</div> -->
+    </section>
+    <section id="otherSetting">
+        <div id="otherSettingsWrapper">
+            <div id="otherSettingsHolder">
+                <div id="personalInfoSetting" onclick="return personalInfo()" >PERSONAL INFO</div>
+            </div>
+        </div>
+    </section>
+    <div id="logOutWrapper" onclick="return logOut()" >
+        LOG OUT
+    </div>
+    <script src="/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Sign up</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='/main.css'>
+    <script src='/main.js'></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body class="add_info_body">
+    <header class="add_info_header">
+        <div class="add_info_header_logo">
+            <img src="/Resources/thoughtify_logo_white.png"id="add_info_header_logo">
+        </div>
+    </header>
+    <section id="add_info_form">
+        <div class="add_form_holder">
+            <div class="add_form_heading">
+                <h1>ADD ADDITIONAL INFO</h1>
+            </div>
+           <form id="add_info_form" method="get" action="/en/dp">
+                <div class="add_info_form_input_holder">
+                    <div class="add_info_dob_input">
+                        <input name="D.O.B" type="date"placeholder="D.O.B"id="add_info_dob_input"required>
+                    </div>
+                    <div id="gender">
+                    <label for="GENDER" id="genderLabel" >GENDER</label>
+                    
+                    <div id="add_info_genders">
+                        <input type="radio"  name="GENDER" value="male" id="add_info_gender" class="add_info_gender">MALE
+                        <input type="radio"  name="GENDER" value="female" id="add_info_gender"class="add_info_gender" >FEMALE
+                        <input type="radio"  name="GENDER" value="other" id="add_info_gender"class="add_info_gender" >OTHER
+                    </div>
+                    </div>
+                    <div id="pronouns">
+                        <label for="GENDER" id="pronounLabel">PRONOUNS</label>
+                        <div class="add_info_pronouns">
+                            <input type="radio"  name="PRONOUN" value="HE/HIM" id="add_info_pronoun_he"class="add_info_pronoun" >HE/HIM
+                            <input type="radio"  name="PRONOUN" value="SHE/HER" id="add_info_pronoun_she" class="add_info_pronoun">SHE/HER
+                            <input type="radio"  name="PRONOUN" value="THEY/THEM" id="add_info_pronoun_they"class="add_info_pronoun" >THEY/THEM
+                        </div>
+                    </div>
+                    <!-- <span id="message">**PASSWORD SHOULD ATLEAST BE OF 8 CHARACTERS AND LESS THEN 15 CHARACTERS**</span> -->
+                    
+                </div>
+                <input type="submit"value="SUBMIT" id="add_info_submit_button"onclick="return addInfo()">
+           </form>
+           <!-- <p>Already have an account? <a href="/en/login" id="login_link">log in</a></p> -->
+        </div>
+    </section>
+</body>
+</html>
