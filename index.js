@@ -278,7 +278,7 @@ server.post('/en/login',async (req, res) =>{
         var user = userCredential.user.uid;
         console.log('this is the user Uid')
         console.log(user)
-        // res.json({userUid:user})
+        res.json({userUid:user})
       })
       .catch((error) => {
         var errorCode = error.code;
