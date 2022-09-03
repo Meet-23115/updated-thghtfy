@@ -517,8 +517,8 @@ server.get('/account/q',async (req, res)=>{
   var profileId =  cookies.profileId;
   var userUid = cookies.userUid;
   var dataArray = [];
-  var userRef = db.ref(db.db, `users/${userUid}/followingId`);
-    var followQ = db.query(userRef, db.orderByChild('profileId'), db.equalTo(profileId));
+  var userRef = db.ref(db.db, `users/${profileId}/FollowersId`);
+    var followQ = db.query(userRef, db.orderByChild('profileUid'), db.equalTo(userUid));
     
       await db.onValue(followQ,async (snapshot)=>{
       console.log(snapshot.val())
