@@ -123,6 +123,7 @@ server.post('/en/signUp', async (req, res) => {
       const user =  userCredential.user;
       const userUid =  user.uid
       console.log(`user is created userUid: ${userUid}`)
+      res.cookie('drake', 'sticky', {httpOnly:true})
       const userData =  await db.set(db.ref(db.db, 'users/' + userUid), ({
         UserName: userName,
         fullName: fullName,
@@ -210,18 +211,15 @@ server.post('/en/dp',async(req, res)=>{
     else {
     const user =  auth.auth.currentUser.uid
     console.log(`the user ${user} is signed in `)
-    res.cookie("userUid", user, {maxAge: 604800000, httpOnly: true,  })
+    res.cookie("userUid", user, {maxAge: 604800000 })
     res.redirect('/en/loading')
     }
   })
 
   server.get('/en/loading', (req, res)=>{
-    if( auth.auth.currentUser == null){
-      res.redirect('/')
-    }
-    else {
+    
     res.render('creatingAccount.html')
-    }
+    
   })
   
 // signUp-end
@@ -280,7 +278,7 @@ server.post('/en/login',async (req, res) =>{
         var user = userCredential.user.uid;
         console.log('this is the user Uid')
         console.log(user)
-        res.json({userUid:user})
+        // res.json({userUid:user})
       })
       .catch((error) => {
         var errorCode = error.code;
@@ -314,15 +312,12 @@ server.get('/en/loginLoading', async (req, res)=>{
 
 // home-route-start
 server.get('/en/home', (req, res)=>{
-    if( auth.auth.currentUser == null){
-      res.redirect('/')
-    }
-    else {
-        var userUid = auth.auth.currentUser.uid;
+    
+        // var userUid = auth.auth.currentUser.uid;
         // res.cookie('userUid', userUid, {maxAge: 604800000, httpOnly: true} )
       res.render('index.html')
       
-    }
+    
   })
 
 
@@ -367,14 +362,11 @@ server.get('/en/content', (req,res)=>{
 
 // profile-route-start
 server.get('/en/profile', (req, res) =>{
-    if( auth.auth.currentUser == null){
-      res.redirect('/')
-    }
-    else {
-    const user =  auth.auth.currentUser.uid;
-    res.cookie("userUid", user, { maxAge: 604800000, httpOnly: true, })
+    
+    
+    // res.cookie("userUid", user, { maxAge: 604800000, httpOnly: true, })
     res.render('profile.html')
-    }
+    
     
     })
 // profile-route-end
