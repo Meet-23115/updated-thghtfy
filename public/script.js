@@ -196,7 +196,7 @@ function page(){
       method:'post',
       body:JSON.stringify(profileData)
        })) 
-        
+        return true
       
     })
   })
@@ -230,7 +230,7 @@ function page(){
       
        followB.setAttribute('onclick', 'return follow()')
     }
-      
+      return true;
 
   })
   
@@ -287,7 +287,9 @@ function page(){
       
       const thoughtHolder = document.getElementById('profile_posted_thought');
       thoughtHolder.appendChild(postDiv2)
+      return true;
     })
+    return true;
   })
 
 }
