@@ -504,7 +504,7 @@ server.get('/search/:user', async(req, res)=>{
   res.render('user.html');
   });
 
-server.get('/account/q', (req, res)=>{
+server.get('/account/q',async (req, res)=>{
   var cookies = req.cookies
   var profileId =  cookies.profileId;
   var userUid = cookies.userUid;
@@ -512,25 +512,25 @@ server.get('/account/q', (req, res)=>{
   var userRef = db.ref(db.db, `users/${userUid}/followingId`);
     var followQ = db.query(userRef, db.orderByChild('profileUid'), db.equalTo(profileId));
     
-       db.onValue(followQ, (snapshot)=>{
+      await db.onValue(followQ,async (snapshot)=>{
       console.log(snapshot.val())
-      var data = snapshot.val();
+      var data =await snapshot.val();
 
       
       if(data == null){
         var yk = {follow:false}
-           dataArray.push(yk)
+          await dataArray.push(yk)
         // console.log(dataArray)
       }
       else{
         var yk = {follow:true}
-           dataArray.push(yk)
+          await dataArray.push(yk)
         // console.log(dataArray)
       }
     })
     var data__ = {data: dataArray}
     //  res.cookie('userUid', userUid, {httpOnly:true})
-    res.send(data__)
+   await res.send(data__)
 })
 
 
@@ -557,13 +557,13 @@ server.get('/account/q', (req, res)=>{
 
     var col = ft.collection(ft.ft, `${profileId}`)
     const q = ft.query(col, ft.orderBy('timestamp', 'desc'))
-    var thght =  ft.getDocs(q).then(async (val)=>{
+    var thght = await ft.getDocs(q).then(async (val)=>{
       // console.log(val.docs.)
       // console.log(...doc.data())
       let dataArray = []
-      val.docs.forEach(async (doc)=>{
+     await val.docs.forEach(async (doc)=>{
         console.log({...doc.data()})
-        var push =  dataArray.push({...doc.data()})
+        var push = await dataArray.push({...doc.data()})
         // console.log(thoughts)
       //  return dataArray.push(thoughts);
       // return thoughts
