@@ -219,6 +219,17 @@ function page(){
              followB.setAttribute('onclick', 'return confirmMessage()')
       
           }
+    if(follow ==false){
+      var followB = document.getElementById('follow_button');
+      // console.log('following')
+      var follow_button = document.getElementById('profile_follow_button');
+      follow_button.innerHTML = 'FOLLOW';
+      follow_button.style.backgroundColor = '#d9d9d9';
+      follow_button.style.color = 'black'
+       console.log(followB)
+      
+       followB.setAttribute('onclick', 'return follow()')
+    }
       
 
   })
