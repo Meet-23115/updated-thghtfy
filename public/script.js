@@ -138,8 +138,8 @@ function umk(){
 function page(){
   window.location = '/en/user'
 }
- function user(){
-   fetch('/account/setup').then(async(res)=>{
+ async function user(){
+ await  fetch('/account/setup').then(async(res)=>{
     var data =await res.json();
 // location.reload();
     console.log(data)
@@ -202,9 +202,9 @@ function page(){
   })
 
 
-   fetch('/account/q').then(async(res)=>{
+  await fetch('/account/q').then(async(res)=>{
     var data = await res.json();
-    var q = data.data[0];
+    var q =await data.data[0];
     var follow =await q.follow;
     console.log(follow)
     if(follow == true){
@@ -235,10 +235,10 @@ function page(){
   })
   
 
-  fetch('/user/thoughts').then(async(res)=>{
+ await fetch('/user/thoughts').then(async(res)=>{
     var data =await res.json();
     // console.log(data.thoughts[0])
-    var thoughts = data.thoughts;
+    var thoughts =await data.thoughts;
    console.log(thoughts)
   //  var ans = [data]
   //   // console.log(ans[0])
