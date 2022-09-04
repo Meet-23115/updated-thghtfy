@@ -591,7 +591,7 @@ server.post('/user/follow', async(req, res)=>{
    })
    const profielData = await db.push(db.ref(db.db, `users/${userUid}/followingId/`), ({
     profileUid:profileUid,
-    profileUserName:profileUserName
+    profileUserName:userName
    })).catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -613,7 +613,7 @@ server.get('/user/follow/update', async(req, res)=>{
     
    var lamar = await  db.onValue(fref, async(snapshot)=>{
        var userInfo = await snapshot.val();
-      //  console.log(userInfo)
+       console.log(userInfo)
       //  console.log(userInfo + '4')  
       db.off(fref);
        var dataJ = {followersC:userInfo};
