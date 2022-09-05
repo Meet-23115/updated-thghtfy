@@ -141,6 +141,7 @@ function page(){
  async function user(){
  await  fetch('/account/setup').then(async(res)=>{
     var data =await res.json();
+
 // location.reload();
     console.log(data)
     // console.log(data.data[0])
@@ -149,7 +150,7 @@ function page(){
 //     console.log(follow);
 //     
 // // 
-    var userInfo =await data[0];
+    var userInfo =await data[1];
     var username = userInfo.UserName;
     var fullName = userInfo.fullName;
     var userUid = userInfo.uid;
@@ -196,17 +197,15 @@ function page(){
       method:'post',
       body:JSON.stringify(profileData)
        })) 
+
+
+       
         return true
       
     })
-  })
-
-
-  await fetch('/account/q').then(async(res)=>{
-    var data = await res.json();
-    var q =await data.data[0];
+    var q =await data[0];
     var follow =await q.follow;
-    console.log(follow)
+    // console.log(follow)
     if(follow == true){
             var followB = document.getElementById('follow_button');
             // console.log('following')
@@ -230,68 +229,59 @@ function page(){
       
        followB.setAttribute('onclick', 'return follow()')
     }
-      return true;
 
+    var thoughts =await data[2];
+    console.log(thoughts)
+   //  var ans = [data]
+   //   // console.log(ans[0])
+   //   var que = ans[0]
+   //   console.log(que.)
+ 
+   await  thoughts.forEach(element => {
+       console.log(element.thought);
+       var thoughtContent = element.thought;
+       var thoughtUsername = element.username;
+       var thoughtUid = element.useruid;
+   
+       
+       const postDiv2 = document.createElement('div');
+       postDiv2.id = 'profile_post';
+       
+   
+       const postDiv3 = document.createElement('div');
+       postDiv3.id = 'profile_post_dp';
+       postDiv2.appendChild(postDiv3);
+   
+       const postImg = document.createElement('img');
+       postImg.className = 'profile_post_dp';
+       postImg.src = `https://firebasestorage.googleapis.com/v0/b/thghtfy-32891.appspot.com/o/images%2FuserDp-${thoughtUid}.png?alt=media&token=${thoughtUid}` 
+       postDiv3.appendChild(postImg);
+   
+       const postDiv4 = document.createElement('div');
+       postDiv4.id = 'profile_post_content';
+       postDiv2.appendChild(postDiv4);
+   
+       const postDiv5 = document.createElement('div');
+       postDiv5.id = 'profile_post_username';
+       postDiv4.appendChild(postDiv5);
+   
+       const postH1 = document.createElement('h1');
+       postH1.className = 'profile_post_username';
+       const postUsername = document.createTextNode(thoughtUsername);
+       postH1.appendChild(postUsername);
+       postDiv5.appendChild(postH1);
+       
+       const postDiv6 = document.createElement('div');
+       postDiv6.id = 'profile_post_thought';
+       const postData = document.createTextNode(thoughtContent);
+       postDiv6.appendChild(postData);
+       postDiv4.appendChild(postDiv6);
+       
+       const thoughtHolder = document.getElementById('profile_posted_thought');
+       thoughtHolder.appendChild(postDiv2)
+       return true;
+     })
   })
-  
-
- await fetch('/user/thoughts').then(async(res)=>{
-    var data =await res.json();
-    // console.log(data.thoughts[0])
-    var thoughts =await data.thoughts;
-   console.log(thoughts)
-  //  var ans = [data]
-  //   // console.log(ans[0])
-  //   var que = ans[0]
-  //   console.log(que.)
-
-  await  thoughts.forEach(element => {
-      console.log(element.thought);
-      var thoughtContent = element.thought;
-      var thoughtUsername = element.username;
-      var thoughtUid = element.useruid;
-  
-      
-      const postDiv2 = document.createElement('div');
-      postDiv2.id = 'profile_post';
-      
-  
-      const postDiv3 = document.createElement('div');
-      postDiv3.id = 'profile_post_dp';
-      postDiv2.appendChild(postDiv3);
-  
-      const postImg = document.createElement('img');
-      postImg.className = 'profile_post_dp';
-      postImg.src = `https://firebasestorage.googleapis.com/v0/b/thghtfy-32891.appspot.com/o/images%2FuserDp-${thoughtUid}.png?alt=media&token=${thoughtUid}` 
-      postDiv3.appendChild(postImg);
-  
-      const postDiv4 = document.createElement('div');
-      postDiv4.id = 'profile_post_content';
-      postDiv2.appendChild(postDiv4);
-  
-      const postDiv5 = document.createElement('div');
-      postDiv5.id = 'profile_post_username';
-      postDiv4.appendChild(postDiv5);
-  
-      const postH1 = document.createElement('h1');
-      postH1.className = 'profile_post_username';
-      const postUsername = document.createTextNode(thoughtUsername);
-      postH1.appendChild(postUsername);
-      postDiv5.appendChild(postH1);
-      
-      const postDiv6 = document.createElement('div');
-      postDiv6.id = 'profile_post_thought';
-      const postData = document.createTextNode(thoughtContent);
-      postDiv6.appendChild(postData);
-      postDiv4.appendChild(postDiv6);
-      
-      const thoughtHolder = document.getElementById('profile_posted_thought');
-      thoughtHolder.appendChild(postDiv2)
-      return true;
-    })
-    return true;
-  })
-
 }
 
 

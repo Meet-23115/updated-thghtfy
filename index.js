@@ -504,12 +504,26 @@ server.get('/search/:user', async(req, res)=>{
   res.render('user.html');
   });
 
-server.get('/account/q',async (req, res)=>{
-  var cookies = req.cookies
-  var profileId =  cookies.profileId;
-  var userUid = cookies.userUid;
-  var dataArray = [];
-  var userRef = db.ref(db.db, `users/${userUid}/followingId`);
+// server.get('/account/q',async (req, res)=>{
+//   var cookies = req.cookies
+//   var profileId =  cookies.profileId;
+//   var userUid = cookies.userUid;
+//   var dataArray = [];
+  
+//     var data__ = {data: dataArray}
+//     //  res.cookie('userUid', userUid, {httpOnly:true})
+//     res.send(data__)
+// })
+
+
+  server.get('/account/setup', async (req, res)=>{
+    var cookies = req.cookies
+    var profileId =  cookies.profileId;
+    var userUid = cookies.userUid;
+    var dataArray = [];
+
+
+    var userRef = db.ref(db.db, `users/${userUid}/followingId`);
     var followQ =await db.query(userRef, db.orderByChild('profileUid'), db.equalTo(profileId));
     
       await db.onValue(followQ,async (snapshot)=>{
@@ -528,17 +542,10 @@ server.get('/account/q',async (req, res)=>{
         // console.log(dataArray)
       }
     })
-    var data__ = {data: dataArray}
-    //  res.cookie('userUid', userUid, {httpOnly:true})
-   await res.send(data__)
-})
 
 
-  server.get('/account/setup', async (req, res)=>{
-    var cookies = req.cookies
-    var profileId =  cookies.profileId;
-    var userUid = cookies.userUid;
-    var dataArray = [];
+
+
     var accountRef = db.ref(db.db, 'users/' + profileId);
     await db.onValue(accountRef,async (snapshot)=>{
      // console.log(snapshot.val());
@@ -547,30 +554,39 @@ server.get('/account/q',async (req, res)=>{
     //  var following =w userInfo.FollowersId;
      // console.log(following);
        await dataArray.push(userInfo);
+
+
+       var col = ft.collection(ft.ft, `${profileId}`)
+       const q = ft.query(col, ft.orderBy('timestamp', 'desc'))
+       var thght = await ft.getDocs(q).then(async (val)=>{
+         // console.log(val.docs.)
+         // console.log(...doc.data())
+        //  let dataArray = []
+        let thoughtArray = []
+        await val.docs.forEach(async (doc)=>{
+           console.log({...doc.data()})
+           var push = await thoughtArray.push({...doc.data()})
+           // console.log(thoughts)
+         //  return dataArray.push(thoughts);
+         // return thoughts
+         })
+         await dataArray.push(thoughtArray)
+        //  res.send({thoughts: dataArray})
+         })
+
+
        res.send(dataArray)
    })
   })
-  server.get('/user/thoughts', async (req, res)=>{
-    var cookies = req.cookies
-    var profileId = cookies.profileId;
-    console.log(profileId)
+  // server.get('/user/thoughts', async (req, res)=>{
+  //   var cookies = req.cookies
+  //   var profileId = cookies.profileId;
+  //   console.log(profileId)
 
-    var col = ft.collection(ft.ft, `${profileId}`)
-    const q = ft.query(col, ft.orderBy('timestamp', 'desc'))
-    var thght = await ft.getDocs(q).then(async (val)=>{
-      // console.log(val.docs.)
-      // console.log(...doc.data())
-      let dataArray = []
-     await val.docs.forEach(async (doc)=>{
-        console.log({...doc.data()})
-        var push = await dataArray.push({...doc.data()})
-        // console.log(thoughts)
-      //  return dataArray.push(thoughts);
-      // return thoughts
-      })
-      res.send({thoughts: dataArray})
-      })
-  })
+  
+
+
+  // })
   
 
 server.post('/user/follow', async(req, res)=>{
@@ -835,6 +851,6 @@ server.get('/en/personal', (req, res)=>{
   
 // routes-end
 
-server.listen(process.env.PORT||5999, () => console.log(`server is online`));
+server.listen(process.env.PORT||5000, () => console.log(`server is online at port 5000`));
 
 
