@@ -154,7 +154,10 @@
     width: 200px;
     word-wrap: break-word
 }
-
+#contentLinks,#contentLinks:hover,#contentLinks:visited,#contentLinks:active {
+    text-decoration: none;
+    color: inherit;
+}
 /*Home_page-end*/
 /*posting-start*/
 

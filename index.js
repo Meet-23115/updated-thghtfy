@@ -75,6 +75,13 @@ server.get('/', (req, res)=>{
       })
     }
 })
+// server.get('/en/:any', (req, res)=>{
+//   var cookies = req.cookies;
+//   var userUid = cookies.userUid;
+//   if(userUid == undefined||userUid == null){
+//     res.redirect('/en/signup')
+//   }
+// })
 
 // start-route-end
 
@@ -309,6 +316,28 @@ server.get('/en/loginLoading', async (req, res)=>{
     }
   })
 // logIn-end
+
+server.get('/settingData', (req, res)=>{
+  var userUid = req.cookies.userUid;
+  console.log("oh my goddd!!!")
+  console.log(userUid)
+
+  var user = db.ref(db.db, `users/${userUid}`)
+  db.onValue(user, (snapshot)=>{
+    console.log(snapshot.val())
+    var data = snapshot.val()
+    var username = data.UserName;
+    var fullName = data.fullName;
+    db.off(user)
+    var data__ ={
+      userName:username,
+      fullName:fullName,
+
+    }
+    res.send(data__)
+  })
+})
+
 
 // home-route-start
 server.get('/en/home', (req, res)=>{
@@ -698,7 +727,7 @@ server.get('/en/unfollow', async(req, res)=>{
   // var followC = db.ref(db.db, `users/${following}`)
 })
 server.get('/en/updateCount', async(req, res)=>{
-  
+  console.log("we paid")
   var userUid = req.cookies.userUid;
   var profileId = req.cookies.profileId;
   // console.log(userUid)
@@ -707,7 +736,7 @@ server.get('/en/updateCount', async(req, res)=>{
   var followC = db.ref(db.db, `users/${profileId}/followers`)
   var followingC = db.ref(db.db, `users/${userUid}/following`)
 
-  db.onValue(followC,async (snapshot)=>{
+await  db.onValue(followC,async (snapshot)=>{
     var data = snapshot.val()
     var followers = data.followers;
     db.off(followC)
@@ -718,7 +747,7 @@ server.get('/en/updateCount', async(req, res)=>{
     db.update(followC, {followers:followers})
   })
 
-  db.onValue(followingC, async(snapshot)=>{
+  await db.onValue(followingC, async(snapshot)=>{
     var data = snapshot.val()
     var following = data.following;
     db.off(followingC)

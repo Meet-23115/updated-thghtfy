@@ -229,14 +229,18 @@
   function search(){
     var input = document.getElementById('search_input');
     var history = document.getElementById('history');
-    
-   
+    var userUsername = window.localStorage.getItem('username')
+    // console.log(username)
+   console.log(input)
       input.addEventListener('input',async ()=>{
+       
         var value = input.value;
         var value = value.toLowerCase();
+        
         if(value == ""){
          
-          history.innerText = 'History';
+          // history.innerText = 'History';
+          return true
           
         }
         if(value != ""){
@@ -255,14 +259,18 @@
            var dataArray = data.users;
            console.log(dataArray.length)
            dataArray.forEach(async element => {
+            
             var userUid = element.userUid;
             var username = element.username;
-            console.log(username)
-            console.log(userUid)
-
+            if(username== userUsername){
+              console.log(username)
+              return true;
+            }
+            else{
             var link = document.createElement('a');
-            link.id = 'search_user_link';
+            link.id = 'contentLinks';
             link.href = `/search/${userUid}`;
+            
 
 
             var div2 = document.createElement('div');
@@ -284,11 +292,15 @@
             div4.appendChild(h1);
             link.appendChild(div2);
             document.getElementById('search_results').appendChild(link);
-           var remove = await  input.addEventListener('input', async()=>{
+              await  input.addEventListener('input', async()=>{
               await div2.remove()
             })
 
             var follow = document.getElementById('follow_button');
+            }
+            console.log(username)
+            console.log(userUid)
+
             
            });  
           })  

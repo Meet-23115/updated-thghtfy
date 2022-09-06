@@ -1,5 +1,8 @@
 // const { doc } = require("firebase/firestore");
 
+
+// const { async } = require("@firebase/util");
+
 // const { doc } = require("firebase/firestore");
 
 
@@ -100,10 +103,28 @@ return  console.log('fuck up the fun');
 }
 async function loading(){
   // await fetch('/en/test')
+
+  fetch('/settingData').then(async(res)=>{
+      var data =await res.json()
+      var username = data.userName;
+      var fullName = data.fullName;
+      // console.log(username)
+      var userData = {
+        username:username,
+        fullName:fullName
+      }
+      window.localStorage.setItem('username', username)
+      window.localStorage.setItem('fullName', fullName)
+      // var username = window.localStorage.getItem('username')
+      // var fullName = window.localStorage.getItem('fullName')
+      // console.log(username, fullName)
+  })
     setTimeout(function () {
       // after 5 seconds
       window.location = "/en/home";
    }, 1000)
+
+
   }
   function expand(){
     // var Idiv = document.getElementById('home_header_link');
@@ -182,7 +203,7 @@ function page(){
     }
     
     var follow_button = document.getElementById("profile_follow_button");
-    follow_button.addEventListener('click', ()=>{
+    follow_button.addEventListener('click',async ()=>{
       
         var follow_button = document.getElementById('profile_follow_button');
         follow_button.innerHTML = 'FOLLOWING';
@@ -190,7 +211,7 @@ function page(){
         follow_button.style.color ='#d9d9d9'
       
         follow_button.setAttribute('onclick', 'return confirmMessage()')
-       fetch('/user/follow', ({
+       await fetch('/user/follow', ({
         headers: {
           'Content-Type': 'application/json'
       },
@@ -214,7 +235,7 @@ function page(){
             follow_button.style.backgroundColor = '#ffffff';
             follow_button.style.color = '#d9d9d9'
              console.log(followB)
-            
+            console.log(follow_button)
              followB.setAttribute('onclick', 'return confirmMessage()')
       
           }
@@ -348,7 +369,11 @@ function closeMessage(){
   }
     
 function content(){
+  var username = window.localStorage.getItem('username')
+  console.log(username)
   fetch('/en/content').then(async(res)=>{
+
+
     var data =await res.json();
     var thght = data.thoughts;
     thght.forEach(element => {
@@ -374,11 +399,24 @@ function content(){
       div3.id = 'post_content';
       div1.appendChild(div3);
 
+    
+      var link= document.createElement('a');
+      if(userName == username){
+       link.href = '/en/profile' 
+      }
+      else{
+        link.href =`/search/${thoughtUid}`
+      }
+      
+      link.id = 'contentLinks'
       var h1 = document.createElement('h1');
       h1.id = 'post_user_name';
       var usernameD = document.createTextNode(userName);
+      
       h1.appendChild(usernameD);
-      div3.appendChild(h1);
+      link.appendChild(h1);
+      div3.appendChild(link)
+      
 
       var p = document.createElement('p');
       p.id = 'post_thought';
