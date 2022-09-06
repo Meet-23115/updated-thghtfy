@@ -202,7 +202,32 @@ function page(){
 
     }
     
-    var follow_button = document.getElementById("profile_follow_button");
+    
+    var q =await data[0];
+    var follow =await q.follow;
+    // console.log(follow)
+    if(follow == true){
+            var followB = document.getElementById('follow_button');
+            // console.log('following')
+            var follow_button = document.getElementById('profile_follow_button');
+            follow_button.innerHTML = 'FOLLOWING';
+            follow_button.style.backgroundColor = '#ffffff';
+            follow_button.style.color = '#d9d9d9'
+             console.log(followB)
+            console.log(follow_button)
+             followB.setAttribute('onclick', 'return confirmMessage()')
+      
+          }
+    if(follow ==false){
+      
+      // var followB = document.getElementById('follow_button');
+      // // console.log('following')
+      // var follow_button = document.getElementById('profile_follow_button');
+      // follow_button.innerHTML = 'FOLLOW';
+      // follow_button.style.backgroundColor = '#d9d9d9';
+      // follow_button.style.color = 'black'
+      //  console.log(followB)
+      var follow_button = document.getElementById("profile_follow_button");
     follow_button.addEventListener('click',async ()=>{
       
         var follow_button = document.getElementById('profile_follow_button');
@@ -224,31 +249,7 @@ function page(){
         return true
       
     })
-    var q =await data[0];
-    var follow =await q.follow;
-    // console.log(follow)
-    if(follow == true){
-            var followB = document.getElementById('follow_button');
-            // console.log('following')
-            var follow_button = document.getElementById('profile_follow_button');
-            follow_button.innerHTML = 'FOLLOWING';
-            follow_button.style.backgroundColor = '#ffffff';
-            follow_button.style.color = '#d9d9d9'
-             console.log(followB)
-            console.log(follow_button)
-             followB.setAttribute('onclick', 'return confirmMessage()')
-      
-          }
-    if(follow ==false){
-      var followB = document.getElementById('follow_button');
-      // console.log('following')
-      var follow_button = document.getElementById('profile_follow_button');
-      follow_button.innerHTML = 'FOLLOW';
-      follow_button.style.backgroundColor = '#d9d9d9';
-      follow_button.style.color = 'black'
-       console.log(followB)
-      
-       followB.setAttribute('onclick', 'return follow()')
+      //  followB.setAttribute('onclick', 'return follow()')
     }
 
     var thoughts =await data[2];
@@ -306,6 +307,8 @@ function page(){
 }
 
 
+
+
 function confirmMessage(){
   var span = document.getElementById("confirmMessage");
 
@@ -350,6 +353,9 @@ function closeMessage(){
   var div =  document.getElementById("confirm_message");
   span.removeChild(div)
   // var following = document.
+}
+function follow(){
+  
 }
   function unfollow(){
     console.log('unfollowed')

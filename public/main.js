@@ -296,7 +296,7 @@
               await div2.remove()
             })
 
-            var follow = document.getElementById('follow_button');
+            // var follow = document.getElementById('follow_button');
             }
             console.log(username)
             console.log(userUid)
