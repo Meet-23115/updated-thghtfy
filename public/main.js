@@ -6,6 +6,13 @@
 
 // const { async } = require("@firebase/util");
 
+function noBack(){
+  window.history.forward();
+function noBack() {
+    window.history.forward();
+}
+}
+
 
    function  signUp() {  
     var username = document.getElementById('sign_up_user_name_input').value;
@@ -69,6 +76,7 @@
             
             fetch('/en/signUp', options)
            window.location = '/en/addInfo'
+           window.localStorage.setItem('newUser', true)
             
           }
           if(ans==420){

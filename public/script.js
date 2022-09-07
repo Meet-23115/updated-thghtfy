@@ -1,6 +1,8 @@
 // const { doc } = require("firebase/firestore");
 
 
+
+
 // const { async } = require("@firebase/util");
 
 // const { doc } = require("firebase/firestore");
@@ -98,9 +100,9 @@ await fetch('/thoughts').then(async res=>{
 
 return  console.log('fuck up the fun');
 
-
-
 }
+
+
 async function loading(){
   // await fetch('/en/test')
 
@@ -373,10 +375,190 @@ function follow(){
     fetch('/en/unfollow')
     closeMessage();
   }
+  function newUser(){
+    
+  }
     
 function content(){
+  // window.localStorage.setItem('newUser', true)
   var username = window.localStorage.getItem('username')
+  var newUser = window.localStorage.getItem('newUser');
   console.log(username)
+  console.log(newUser)
+  if (newUser == 'true' ){
+    console.log('this is a new user')
+    // first ins
+    var ins1 = document.createElement('div')
+    ins1.id = 'newUserInsWrapper1'
+
+    var ins1A = document.createElement('div')
+    ins1A.id = 'newUserInsArrow'
+    ins1.appendChild(ins1A);
+
+    var ins1B = document.createElement('div')
+    ins1B.id = 'newUserInsBox';
+
+    var ins1Bp = document.createElement('p')
+    var text = 'Click to share your thoughts'
+    var textNode = document.createTextNode(text)
+    ins1Bp.appendChild(textNode)
+    ins1B.appendChild(ins1Bp)
+
+    var ins1Ba = document.createElement('a')
+    ins1Ba.id = 'next_ins1'
+    ins1Ba.className = 'next_ins'
+    ins1Ba.innerHTML = 'Next'
+    ins1B.appendChild(ins1Ba)
+
+    ins1.appendChild(ins1B)
+    document.getElementById('homePageBody').appendChild(ins1)
+
+    var next = document.getElementById('next_ins1')
+    next.addEventListener('click', ()=>{
+      console.log('this is a new user')
+      document.getElementById('newUserInsWrapper1').remove();
+      // second ins
+      var ins1 = document.createElement('div')
+      ins1.id = 'newUserInsWrapper2'
+  
+      var ins1A = document.createElement('div')
+      ins1A.id = 'newUserInsArrow2'
+      ins1.appendChild(ins1A);
+  
+      var ins1B = document.createElement('div')
+      ins1B.id = 'newUserInsBox';
+  
+      var ins1Bp = document.createElement('p')
+      var text = 'Click for more options'
+      var textNode = document.createTextNode(text)
+      ins1Bp.appendChild(textNode)
+      ins1B.appendChild(ins1Bp)
+  
+      var ins1Ba = document.createElement('a')
+      ins1Ba.id = 'next_ins2'
+      ins1Ba.className = 'next_ins'
+      ins1Ba.innerHTML = 'Next'
+      ins1B.appendChild(ins1Ba)
+  
+      ins1.appendChild(ins1B)
+      // console.log(ins1)
+      document.getElementById('homePageBody').appendChild(ins1)
+  
+      // var next1 = document.getElementById('next_ins1')
+      var next = document.getElementById('next_ins2')
+      next.addEventListener('click', ()=>{
+        console.log('this is a new user')
+        document.getElementById('newUserInsWrapper2').remove();
+        // third ins
+        expand()
+        var ins1 = document.createElement('div')
+        ins1.id = 'newUserInsWrapper3'
+    
+        var ins1A = document.createElement('div')
+        ins1A.id = 'newUserInsArrow3'
+        ins1.appendChild(ins1A);
+    
+        var ins1B = document.createElement('div')
+        ins1B.id = 'newUserInsBox';
+    
+        var ins1Bp = document.createElement('p')
+        var text = 'Click to go to profile'
+        var textNode = document.createTextNode(text)
+        ins1Bp.appendChild(textNode)
+        ins1B.appendChild(ins1Bp)
+    
+        var ins1Ba = document.createElement('a')
+        ins1Ba.id = 'next_ins3'
+        ins1Ba.className = 'next_ins'
+        ins1Ba.innerHTML = 'Next'
+        ins1B.appendChild(ins1Ba)
+    
+        ins1.appendChild(ins1B)
+        // console.log(ins1)
+        document.getElementById('homePageBody').appendChild(ins1)
+    
+        var next = document.getElementById('next_ins3')
+
+        next.addEventListener('click', ()=>{
+          console.log('this is a new user')
+          document.getElementById('newUserInsWrapper3').remove();
+
+          // fourth ins
+          var ins1 = document.createElement('div')
+          ins1.id = 'newUserInsWrapper4'
+      
+          var ins1A = document.createElement('div')
+          ins1A.id = 'newUserInsArrow4'
+          ins1.appendChild(ins1A);
+      
+          var ins1B = document.createElement('div')
+          ins1B.id = 'newUserInsBox';
+      
+          var ins1Bp = document.createElement('p')
+          var text = 'click to search users'
+          var textNode = document.createTextNode(text)
+          ins1Bp.appendChild(textNode)
+          ins1B.appendChild(ins1Bp)
+      
+          var ins1Ba = document.createElement('a')
+          ins1Ba.id = 'next_ins4'
+          ins1Ba.className = 'next_ins'
+          ins1Ba.innerHTML = 'END'
+          ins1B.appendChild(ins1Ba)
+      
+          ins1.appendChild(ins1B)
+          // console.log(ins1)
+          document.getElementById('homePageBody').appendChild(ins1)
+      
+          var next = document.getElementById('next_ins4')
+          next.addEventListener('click', ()=>{
+            document.getElementById('newUserInsWrapper4').remove();
+            shrink();
+            window.localStorage.removeItem('newUser')
+
+          })
+
+        
+
+      })
+    })
+    
+    })
+      
+   
+    // var next = document.getElementById('next_ins3');
+    // next.addEventListener('click', ()=>{
+    //   console.log('I am confuseed')
+    //   document.getElementById('newUserInsWrapper3').remove();
+    //   var ins1 = document.createElement('div')
+    //   ins1.id = 'newUserInsWrapper4'
+  
+    //   var ins1A = document.createElement('div')
+    //   ins1A.id = 'newUserInsArrow4'
+    //   ins1.appendChild(ins1A);
+  
+    //   var ins1B = document.createElement('div')
+    //   ins1B.id = 'newUserInsBox';
+  
+    //   var ins1Bp = document.createElement('p')
+    //   var text = 'Click for more options'
+    //   var textNode = document.createTextNode(text)
+    //   ins1Bp.appendChild(textNode)
+    //   ins1B.appendChild(ins1Bp)
+  
+    //   var ins1Ba = document.createElement('a')
+    //   ins1Ba.id = 'next_ins4'
+    //   ins1Ba.className = 'next_ins'
+    //   ins1Ba.innerHTML = 'Next'
+    //   ins1B.appendChild(ins1Ba)
+  
+    //   ins1.appendChild(ins1B)
+    //   document.getElementById('homePageBody').appendChild(ins1)
+  
+    //   // var next1 = document.getElementById('next_ins1')
+    // })
+  }
+
   fetch('/en/content').then(async(res)=>{
 
 
@@ -442,6 +624,7 @@ function content(){
 
 }
 function logOut(){
+  
   fetch('/en/logOut').then(()=>{
     window.location = '/en/signUp'
   })

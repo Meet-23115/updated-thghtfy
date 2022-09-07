@@ -157,14 +157,8 @@ server.post('/en/signUp', async (req, res) => {
     }
     // addDoc('user', data)
     ft.setDoc(ref, allUsersData);
-  
-
-    
-
     })
-      
-      
-      });
+    });
 
 server.get('/en/addInfo', (req, res)=>{
   res.render('additionalInfo.html')
