@@ -433,7 +433,7 @@ server.get('/en/Create_A_Post', (req, res) =>{
     const starCountRef =   db.ref(db.db, 'users/' + userUid );
     var uploadedThought = req.body.uploadedThought;
     console.log(uploadedThought);
-    db.onValue(starCountRef, async(snapshot) => {
+   await db.onValue(starCountRef, async(snapshot) => {
       const data = await snapshot.val();
       // console.log(data)
         var userData = await {data}
