@@ -46,16 +46,13 @@ server.get('/test', (req, res)=>{
     req.socket.remoteAddress ||
     null;
     console.log(ip)
-    const ipinfo = new IPinfoWrapper("MY_TOKEN");
-    ipinfo.lookupIp(ip).then((response) => {
-      // replace 1.1.1.1 with an IP Address
-      console.log(response);
-      res.send(response)
+    res.send(ip)
+   
   });
     // const ipLocation = require("iplocation");
 
     
-})
+
 
    
 server.get('/', (req, res)=>{
