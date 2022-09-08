@@ -10,8 +10,8 @@ const admin = require('./modules/firebase/admin');
 const mlt = require('./modules/multer');
 const ft = require('./modules/firebase/firestore');
 const sharp = require('sharp')
-var geoip = require("geoip-lite")
-// const ipLocation = require("ip-location");
+// var geoip = require("geoip-lite")
+const ipLocation = require("iplocation");
 
 const path = require('path');
 // const { constants } = require('buffer');
@@ -46,9 +46,12 @@ server.get('/test', (req, res)=>{
     req.socket.remoteAddress ||
     null;
     console.log(ip)
-    var geo = geoip.lookup(ip);
-    console.log(geo);
-    res.send(geo, ip)
+    // const ipLocation = require("iplocation");
+
+    (async () => {
+      await ipLocation(ip);
+      //=> { latitude: -33.8591, longitude: 151.2002, region: { name: "New South Wales" ... } ... }
+    })();
 })
 
    
