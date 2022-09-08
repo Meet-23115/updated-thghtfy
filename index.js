@@ -48,6 +48,7 @@ server.get('/test', (req, res)=>{
     console.log(ip)
     var geo = geoip.lookup(ip);
     console.log(geo);
+    res.send(geo, ip)
 })
 
    
