@@ -10,6 +10,7 @@ const admin = require('./modules/firebase/admin');
 const mlt = require('./modules/multer');
 const ft = require('./modules/firebase/firestore');
 const sharp = require('sharp')
+var geoip = require("geoip-lite")
 // const ipLocation = require("ip-location");
 
 const path = require('path');
@@ -41,12 +42,12 @@ server.use(cookieParser());
 
 
 server.get('/test', (req, res)=>{
-  
   var ip = req.headers['x-forwarded-for'] ||
-  req.socket.remoteAddress ||
-  null;
-  console.log(ip)
-  res.send(ip)
+    req.socket.remoteAddress ||
+    null;
+    console.log(ip)
+    var geo = geoip.lookup(ip);
+    console.log(geo);
 })
 
    
