@@ -11,7 +11,7 @@ const mlt = require('./modules/multer');
 const ft = require('./modules/firebase/firestore');
 const sharp = require('sharp')
 // var geoip = require("geoip-lite")
-const ipLocation = require("iplocation");
+const { IPinfoWrapper } = require("node-ipinfo");
 
 const path = require('path');
 // const { constants } = require('buffer');
@@ -46,12 +46,14 @@ server.get('/test', (req, res)=>{
     req.socket.remoteAddress ||
     null;
     console.log(ip)
+    ipinfo.lookupIp(ip).then((response) => {
+      // replace 1.1.1.1 with an IP Address
+      console.log(response);
+      res.send(response)
+  });
     // const ipLocation = require("iplocation");
 
-    (async () => {
-      await ipLocation(ip);
-      //=> { latitude: -33.8591, longitude: 151.2002, region: { name: "New South Wales" ... } ... }
-    })();
+    
 })
 
    
