@@ -10,8 +10,10 @@ const admin = require('./modules/firebase/admin');
 const mlt = require('./modules/multer');
 const ft = require('./modules/firebase/firestore');
 const sharp = require('sharp')
+// const ipLocation = require("ip-location");
 
 const path = require('path');
+// const { constants } = require('buffer');
 // const { syncBuiltinESMExports } = require('module');
 // const { async } = require('@firebase/util');
 // const { connectStorageEmulator } = require('firebase/storage');
@@ -37,7 +39,15 @@ server.use(cookieParser());
 // routes-start
 // start-route-start
 
-   
+
+server.get('/test', (req, res)=>{
+  
+  var ip = req.headers['x-forwarded-for'] ||
+  req.socket.remoteAddress ||
+  null;
+  console.log(ip)
+  res.send(ip)
+})
 
    
 server.get('/', (req, res)=>{
@@ -118,7 +128,9 @@ server.post('/en/signUp', async (req, res) => {
     const fullName = req.body.fullName;
     const email = req.body.email;
     const password = req.body.password;
-
+    
+    
+    
 
     
     // const ref = ft.doc(ft.ft, `${userUid}/${thghtid}`);
@@ -155,10 +167,14 @@ server.post('/en/signUp', async (req, res) => {
       username: userName,
       userUid: userUid
     }
+    
     // addDoc('user', data)
     ft.setDoc(ref, allUsersData);
     })
     });
+
+   
+
 
 server.get('/en/addInfo', (req, res)=>{
   res.render('additionalInfo.html')
@@ -227,7 +243,7 @@ server.post('/en/dp',async(req, res)=>{
 
 // settingUpAccount-start
 server.get('/en/settingUp', async (req, res)=>{
-    var userUid = req.cookies.userUid
+  var userUid = req.cookies.userUid;
     const starCountRef =   db.ref(db.db, 'users/' + userUid );
     db.onValue(starCountRef, async(snapshot) => {
     const data = await snapshot.val();
@@ -271,6 +287,7 @@ server.post('/en/login',async (req, res) =>{
     // console.log(req.body)
     const email = req.body.email;
     const password = req.body.password;
+    
     console.log(req.body)
 
       await auth.signInWithEmailAndPassword(auth.auth, email, password)
@@ -311,8 +328,46 @@ server.get('/en/loginLoading', async (req, res)=>{
   })
 // logIn-end
 
+server.post('/location', async(req, res)=>{
+  var cord = req.body;
+  console.log(cord)
+  var coords = {
+    lon:req.body.lon,
+    lat:req.body.lat
+  }
+  var username = req.body.username;
+  console.log(username)
+  // const col = ft.collection(ft.ft, 'AllUsers').doc(username).
+  const ref = ft.doc(ft.ft,  `AllUsers/${username}`);
+  
+  ft.updateDoc(ref, {
+    lon:req.body.lon,
+    lat:req.body.lat
+  })
+})
 server.get('/settingData', (req, res)=>{
   var userUid = req.cookies.userUid;
+
+  var recom = ft.collection(ft.ft, `AllUsers`);
+  // const q_ = ft.query(col, ft.orderBy('timestamp', 'desc'))
+   ft.getDocs(recom).then(async (val)=>{
+    let dataArray = []
+    val.docs.forEach(async(doc)=>{
+      // console.log({...doc.data()})
+      var push = await dataArray.push({...doc.data()})
+      // ft.disableNetwork(ft.ft);
+      // var recommend = ft.collection(ft.ft, `${userUid}-reccomendations`)      
+      // ft.addDoc(recommend, ({...doc.data()}))
+      
+    
+    })
+    console.log(dataArray)
+})
+
+
+
+
+
   console.log("oh my goddd!!!")
   console.log(userUid)
 

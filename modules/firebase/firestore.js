@@ -1,6 +1,6 @@
 const { initializeApp } = require('firebase/app');
 // const { set } = require('firebase/database');
-const { getFirestore, collection, addDoc, doc, setDoc, orderBy, getDoc, where , getDocs, query, startAt, startAfter, limit, onSnapshot, disableNetwork, deleteDoc } = require('firebase/firestore');
+const { getFirestore, collection, addDoc, doc, setDoc, orderBy, getDoc, where , getDocs, query, startAt, startAfter, limit, onSnapshot, disableNetwork, deleteDoc , updateDoc} = require('firebase/firestore');
 require('firebase/firestore')
 require('dotenv').config();
 
@@ -34,4 +34,4 @@ const firebaseConfig = {
   //   console.log('done')
   // )
 //   console.log(ft)
-  module.exports= { ft, collection, addDoc, doc, setDoc,orderBy, getDoc, where, getDocs, query, startAt, startAfter, limit , onSnapshot, disableNetwork, deleteDoc}
+  module.exports= { ft, collection, addDoc, doc, setDoc,orderBy, getDoc, where, getDocs, query, startAt, startAfter, limit , onSnapshot, disableNetwork, deleteDoc, updateDoc}

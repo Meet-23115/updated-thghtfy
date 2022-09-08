@@ -106,6 +106,8 @@ return  console.log('fuck up the fun');
 async function loading(){
   // await fetch('/en/test')
 
+  
+
   fetch('/settingData').then(async(res)=>{
       var data =await res.json()
       var username = data.userName;
@@ -120,7 +122,48 @@ async function loading(){
       // var username = window.localStorage.getItem('username')
       // var fullName = window.localStorage.getItem('fullName')
       // console.log(username, fullName)
+         
+ 
   })
+
+  if('geolocation' in navigator){
+    await navigator.geolocation.getCurrentPosition(async(position)=>{
+      console.log(position.coords.latitude)
+      console.log(position.coords.longitude)
+
+      var username = window.localStorage.getItem('username')
+      var lon = position.coords.longitude;
+      var lat = position.coords.latitude;
+      
+      var coords = {
+        lon:lon,
+        lat:lat,
+        username:username
+      }
+      fetch('/location', ({
+        headers:{
+          'Content-Type': 'application/json'
+        },
+        method:'post',
+        body:JSON.stringify(coords)
+      }))
+    })
+  } else{
+    console.log('no it is not')
+  }
+
+  function json(url) {
+    return fetch(url).then(res => res.json());
+  }
+  
+  let apiKey = 'your_api_key';
+  json(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
+    console.log(data.ip);
+    console.log(data.city);
+    console.log(data.country_code);
+    // so many more properties
+  });
+  
     setTimeout(function () {
       // after 5 seconds
       window.location = "/en/home";

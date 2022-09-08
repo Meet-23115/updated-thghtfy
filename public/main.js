@@ -1,5 +1,11 @@
 // const { enableIndexedDbPersistence } = require("firebase/firestore");
 
+// const { connectDatabaseEmulator } = require("firebase/database");
+
+// const { copyDir } = require("pacman/lib/fss");
+
+// const { async } = require("@firebase/util");
+
 // const { async } = require("@firebase/util");
 
 // const { async } = require("@firebase/util");
@@ -13,8 +19,56 @@ function noBack() {
 }
 }
 
+function permission(){
+    if('geolocation' in navigator){
+      console.log('geolocation is available')
 
-   function  signUp() {  
+      navigator.geolocation.getCurrentPosition(function(position){
+        console.log(position.coords.latitude)
+        console.log(position.coords.longitude)
+      })
+    } else{
+      console.log('no it is not')
+    }
+
+}
+  async function  signUp() {  
+    
+//   var array = []
+//  var lon = ''
+      // console.log('geolocation is available')
+   
+      if('geolocation' in navigator){
+        await navigator.geolocation.getCurrentPosition(async(position)=>{
+          console.log(position.coords.latitude)
+          console.log(position.coords.longitude)
+          // var lon = position.coords.longitude
+          // var loc = await{
+          //   lon:position.coords.longitude,
+          //   lat:position.coords.longitude
+          // }
+          // var cord = {
+          //   loc
+          // }
+          // await array.push(cord)
+        //  await fetch('/location', ({
+        //   headers:{
+        //     "Content-Type":'application/json'
+        //   },
+        //     method:'post',
+        //     body:JSON.stringify(loc)
+        //   }))
+        })
+      } else{
+        console.log('no it is not')
+      }
+      // console.log(cord)
+      
+      
+
+
+     
+    
     var username = document.getElementById('sign_up_user_name_input').value;
     var pw = document.getElementById('sign_up_password_input').value;
     var pwC = document.getElementById("sign_up_password_conformation_input").value;
@@ -50,7 +104,11 @@ function noBack() {
         const email = document.getElementById("sign_up_email_input").value;
         const password = document.getElementById("sign_up_password_conformation_input").value;
         var form = document.getElementById("sign_up_form");
-        const signUpData = {userName,fullName,email,password};
+
+      
+        
+      
+        const signUpData =await {userName,fullName,email,password};
         const usernameCheck = {
           username:userName
         }
