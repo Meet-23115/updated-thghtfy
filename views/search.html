@@ -8,32 +8,32 @@
     <link rel='stylesheet' type='text/css' media='screen' href='/main.css'>
     <script src='/main.js'></script>
 </head>
-<body onload="return umk()">
+<body onload="return umk()" id="searchBody">
     <header id="search_header">
-        <div id="search_header_content">
+        <!-- <div id="search_header_content"> -->
             
-            <div id="search_bar">
-               <div id="search_input_holder"><div id="search_bar_input">
-                <input type="text"id="search_input"name="searchInput" placeholder="SEARCH" autocomplete="off" onclick="return search()" >
-               
-                <!-- <div id="search_bar_img_holder"><img src="/Resources/magnifying-glass-solid.svg"  id="search_bar_search_img"></div> -->
-            </div>
-            
-
+            <!-- <div id="search_bar"> -->
+            <div id="search_input_holder">
+                <div id="search_bar_input">
+                 <input type="text"id="search_input"name="searchInput" placeholder="SEARCH" autocomplete="off" onclick="return search()" >
+               </div>
         </div>
+        <!-- <div id="closeSearch">
+            <img src="/Resources/x-solid (1).svg" height="30px" onclick="return closeSearch()" >
+        </div> -->
     </header>
-    
-        <div id="search_result_wrapper">
+    <div id="searchResults"></div>
+        <!-- <div id="search_result_wrapper">
 
             <div id="search_results">
-                <!-- <span id="history"></span> -->
+                 <span id="history"></span
                 
                
                 
                 
             </div>
             
-        </div>
+        </div> -->
     
         
     
@@ -43,9 +43,62 @@
             <h1>YOU MIGHT KNOWS</h1>
         </div>
         <div id="u_m_k">
-            <div id="umk">
-                <div id="unk_dp"></div>
-                <div id="umk_username"></div>
+            <div id="recomWrapper" class="umk" >
+
+                <div id="recomSkeletons">
+                    <div id="recom">
+                        <div id="recomLeft">
+                            <div id="recomDp" class="skeleton" ></div>
+                        </div>
+                        <div id="recomMiddle">
+                            <div id="skeletonnames">
+                                <div id="skeletonUsername" class="skeleton" ></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="recom">
+                        <div id="recomLeft">
+                            <div id="recomDp" class="skeleton" ></div>
+                        </div>
+                        <div id="recomMiddle">
+                            <div id="skeletonnames">
+                                <div id="skeletonUsername" class="skeleton" ></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="recom">
+                        <div id="recomLeft">
+                            <div id="recomDp" class="skeleton" ></div>
+                        </div>
+                        <div id="recomMiddle">
+                            <div id="skeletonnames">
+                                <div id="skeletonUsername" class="skeleton" ></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="recom">
+                        <div id="recomLeft">
+                            <div id="recomDp" class="skeleton" ></div>
+                        </div>
+                        <div id="recomMiddle">
+                            <div id="skeletonnames">
+                                <div id="skeletonUsername" class="skeleton" ></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="recom">
+                        <div id="recomLeft">
+                            <div id="recomDp" class="skeleton" ></div>
+                        </div>
+                        <div id="recomMiddle">
+                            <div id="skeletonnames">
+                                <div id="skeletonUsername" class="skeleton" ></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
             </div>
         </div>
     </section>

@@ -23,11 +23,14 @@
     <section id="profile_details">
         <div class="profile_details">
         <div class="profile_profile_pic"id="profile_user_dp">
-            <!-- <img src="/Resources/profile_picture_example.jpg"id="profile_profile_pic" >  -->
-                    <img alt="" class="thumb--lg"id="profile_profile_pic" src="/Resources/profile_picture_example.jpg">
-        </div>
-        <div id="profile_profile_description">
-            <div id="profile_profile_username">
+            
+                    <img alt="" class="thumb--lg skeleton "id="profile_profile_pic"  >
+        </div> 
+        <div id="profile_profile_description" >
+            <div id="skeletonUsername" class="skeleton" ></div>
+            <div id="skeletonFullname" class="skeleton" ></div>
+
+            <div id="profile_profile_username"  >
                 <h1 class="profile_profile_username"id='profile_username_display'></h1>
             </div>
             <div id="profile_profile_real_name">
@@ -36,7 +39,10 @@
         </div>
         </div>
         <div id="f_count">
+            <div id="skeletonFollowers" class="skeleton" ></div>
+                <div id="skeletonFollowing" class="skeleton" ></div>
             <div id="followerCount_holder"  >
+                
                 <div id="follwerCount_wrapper" onclick="return profileFollowers()"  >
                     <div id="followerCount">0</div>
                     <div id="followerP">FOLLOWERS</div>
@@ -55,6 +61,57 @@
         </div>
         <div id="profile_posted_thought">
             <span id="profile_page_message"></span>
+            
+            <div id="skeletonPosts">
+
+                <div id="skeleton_post">
+                    <div id="profile_post_dp"  >
+                        <div  class="profile_post_dp skeleton " alt=""></div>
+                    </div>
+                    <div id="skeleton_post_content" >
+                        <div id="skeleton_post_username" class="skeleton" >
+                            
+                        </div>
+                        <div id="skeleton_post_thought"class="skeleton" ></div>
+                    </div>
+                </div>
+                <div id="skeleton_post">
+                    <div id="profile_post_dp"  >
+                        <div  class="profile_post_dp skeleton " alt=""></div>
+                    </div>
+                    <div id="skeleton_post_content" >
+                        <div id="skeleton_post_username" class="skeleton" >
+                            
+                        </div>
+                        <div id="skeleton_post_thought"class="skeleton" ></div>
+                    </div>
+                </div>
+                
+                <div id="skeleton_post">
+                    <div id="profile_post_dp"  >
+                        <div  class="profile_post_dp skeleton " alt=""></div>
+                    </div>
+                    <div id="skeleton_post_content" >
+                        <div id="skeleton_post_username" class="skeleton" >
+                            
+                        </div>
+                        <div id="skeleton_post_thought"class="skeleton" ></div>
+                    </div>
+                </div>
+                <div id="skeleton_post">
+                    <div id="profile_post_dp"  >
+                        <div  class="profile_post_dp skeleton " alt=""></div>
+                    </div>
+                    <div id="skeleton_post_content" >
+                        <div id="skeleton_post_username" class="skeleton" >
+                            
+                        </div>
+                        <div id="skeleton_post_thought"class="skeleton" ></div>
+                    </div>
+                </div>
+           
+            </div>
+                
         </div>
     </section>
     <script src="/script.js"></script>

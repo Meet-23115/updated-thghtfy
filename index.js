@@ -11,7 +11,8 @@ const mlt = require('./modules/multer');
 const ft = require('./modules/firebase/firestore');
 const sharp = require('sharp')
 // var geoip = require("geoip-lite")
-const { IPinfoWrapper } = require("node-ipinfo");
+// var NodeGeocoder = require('node-geocoder');
+// const{ LocationIq } = require('locationiq')
 
 const path = require('path');
 // const { constants } = require('buffer');
@@ -36,19 +37,19 @@ server.use(cookieParser());
 // express-end
 
 // variables
-
+// const locationiq = new require('locationiq')
 // routes-start
 // start-route-start
 
 
-server.get('/test', (req, res)=>{
-  var ip = req.headers['x-forwarded-for'] ||
-    req.socket.remoteAddress ||
-    null;
-    console.log(ip)
-    res.send(ip)
+// server.get('/test', (req, res)=>{
+//   var ip = req.headers['x-forwarded-for'] ||
+//     req.socket.remoteAddress ||
+//     null;
+//     console.log(ip)
+//     res.send(ip)
    
-  });
+//   });
     // const ipLocation = require("iplocation");
 
     
@@ -334,46 +335,21 @@ server.get('/en/loginLoading', async (req, res)=>{
 // logIn-end
 
 server.post('/location', async(req, res)=>{
-  var cord = req.body;
+  var cord =await req.body;
   console.log(cord)
-  var coords = {
-    lon:req.body.lon,
-    lat:req.body.lat
-  }
+  var city = req.body.city;
   var username = req.body.username;
   console.log(username)
-  // const col = ft.collection(ft.ft, 'AllUsers').doc(username).
+
   const ref = ft.doc(ft.ft,  `AllUsers/${username}`);
   
   ft.updateDoc(ref, {
-    lon:req.body.lon,
-    lat:req.body.lat
+    city:city
   })
 })
 server.get('/settingData', (req, res)=>{
   var userUid = req.cookies.userUid;
 
-  var recom = ft.collection(ft.ft, `AllUsers`);
-  // const q_ = ft.query(col, ft.orderBy('timestamp', 'desc'))
-   ft.getDocs(recom).then(async (val)=>{
-    let dataArray = []
-    val.docs.forEach(async(doc)=>{
-      // console.log({...doc.data()})
-      var push = await dataArray.push({...doc.data()})
-      // ft.disableNetwork(ft.ft);
-      // var recommend = ft.collection(ft.ft, `${userUid}-reccomendations`)      
-      // ft.addDoc(recommend, ({...doc.data()}))
-      
-    
-    })
-    console.log(dataArray)
-})
-
-
-
-
-
-  console.log("oh my goddd!!!")
   console.log(userUid)
 
   var user = db.ref(db.db, `users/${userUid}`)
@@ -391,8 +367,89 @@ server.get('/settingData', (req, res)=>{
     res.send(data__)
   })
 })
+server.get('/en/recom', (req, res)=>{
+  res.render('recom.html')
+})
+server.post('/en/recom', async(req, res)=>{
+  var userUid = req.cookies.userUid
+  var city = await req.body.city
+  var username = req.body.username
+  console.log(city)
+  console.log('yeah it is getting fetched')
+  var recom = ft.collection(ft.ft, `AllUsers`);
+  var q = ft.query(recom, ft.where("city", "==", `${city}`))
+  // const q_ = ft.query(col, ft.orderBy('timestamp', 'desc'))
+  await ft.getDocs(q).then(async (val)=>{
+    // let dataArray = []
+
+    // ft.disableNetwork(ft.ft)
+  await  val.docs.forEach(async(doc)=>{
+      var data = {...doc.data()}
+    console.log({...doc.data()})
+    console.log('ok')
+      // var push = await dataArray.push({...doc.data()})
+      // ft.disableNetwork(ft.ft, q);
 
 
+      // var userRecom = ft.collection(ft.ft, `${userUid}-reccomendations` )
+
+
+      
+      var recommend = ft.collection(ft.ft, `${userUid}-reccomendations`)   
+      
+
+      var q_ =await ft.query(recommend, ft.where("userUid", "==", `${data.userUid}`))
+      await ft.getDocs(q_).then(async(val)=>{
+        console.log(val.size)
+        if(val.empty){
+          // console.log('its empty')
+          if(data.username != username){
+            await ft.addDoc(recommend, (data))
+          }
+          
+        }
+        await val.docs.forEach(async(doc)=>{
+          
+          var data__ = {...doc.data()}
+          // console.log(data__)
+          if(data__!=undefined||data__!=''||data!=null){
+            console.log('already reccomended')
+          }
+          else{
+            
+          }
+            
+          
+        })
+      })
+
+
+     
+    
+    })
+    // res.sendStatus(200)
+    res.end(()=>{
+      console.log('reccomend is set')
+    })
+    // console.log(dataArray)
+})
+
+})
+server.get('/en/reccomend', async(req, res)=>{
+  var userUid = req.cookies.userUid;
+  var recom = ft.collection(ft.ft, `${userUid}-reccomendations`)
+  let dataArray = []
+ await ft.getDocs(recom).then(async(val)=>{
+  // ft.disableNetwork(ft.ft)
+    await val.docs.forEach(async(doc)=>{
+      var push = await dataArray.push({...doc.data()})
+      // ft.disableNetwork(ft.ft)
+      // console.log(dataArray)
+      
+    })
+    await res.send({recomends:dataArray})
+  })
+})
 // home-route-start
 server.get('/en/home', (req, res)=>{
     
@@ -541,18 +598,18 @@ server.get('/en/Create_A_Post', (req, res) =>{
   server.get('/en/search', (req, res)=>{
     res.render('search.html')
   })
-  server.post('/en/umk',async (req, res) =>{
-    // var cookie = req.cookies;
-    var data = await (req.body)
-    // var userUid = cookie.userUid;
-    console.log(data)
+  // server.post('/en/umk',async (req, res) =>{
+  //   // var cookie = req.cookies;
+  //   var data = await (req.body)
+  //   // var userUid = cookie.userUid;
+  //   console.log(data)
 
-    // var dbRef =  db.ref(db.db, 'users/');
-    // db.onValue(dbRef, async(snapshot) => {
-      // const data = await snapshot.val();
-      // console.log(data)
-      // res.send(data)
-    })
+  //   // var dbRef =  db.ref(db.db, 'users/');
+  //   // db.onValue(dbRef, async(snapshot) => {
+  //     // const data = await snapshot.val();
+  //     // console.log(data)
+  //     // res.send(data)
+  //   })
  
   // })
   server.post('/en/search',async (req, res)=>{
@@ -670,6 +727,258 @@ server.get('/search/:user', async(req, res)=>{
 
 
   // })
+
+  server.get('/umk/remove/:id/:name', async(req, res)=>{
+    var profileId = req.params.id;
+    var userName = req.params.name
+    var userUid = req.cookies.userUid;
+
+    var recom = ft.collection(ft.ft, `${userUid}-reccomendations`);
+  var q = ft.query(recom, ft.where("userUid", "==", `${profileId}`))
+  // const q_ = ft.query(col, ft.orderBy('timestamp', 'desc'))
+   ft.getDocs(q).then(async (val)=>{
+    // let dataArray = []
+    
+  await  val.docs.forEach(async(doc)=>{
+    console.log(doc.id)
+    var rec = ft.doc(ft.ft, `${userUid}-reccomendations/${doc.id}`)
+    await ft.deleteDoc(rec)
+    })
+  })
+  await res.redirect('/en/search')
+  })
+
+  server.get('/umk/follow/:id/:name', async(req, res)=>{
+    var profileId = req.params.id;
+    var userName = req.params.name
+    var userUid = req.cookies.userUid;
+    console.log(`userUid ${userUid}`)
+    console.log(`profileUid ${profileId}`)
+    // console.log(req.body)
+    // console.log(userUid)
+    // var userProfile = req.body;
+  //  var userName = userProfile.profileUserName;
+  //  var profileUid = userProfile.profileUid;
+  
+    const userData =  await db.push(db.ref(db.db, 'users/' + profileId + '/FollowersId/'), ({
+      userUid
+     }))
+      .catch((error) => {
+       const errorCode = error.code;
+       const errorMessage = error.message;
+     })
+     const profielData = await db.push(db.ref(db.db, `users/${userUid}/followingId/`), ({
+      profileUid:profileId,
+      profileUserName:userName
+     })).catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+    })
+
+    // var col = ft.collection(ft.ft, `${userUid}-reccomendations`)
+    // var rec = ft.doc(ft.ft, `${userUid}-reccomendations`)
+    // var q = ft.query(col, ft.where(`userUid`, '==', `${profileId}`) )
+
+    // ft.getDocs(q).then((val)=>{
+    //   console.log(...val.data())
+    // })
+
+
+    var recom = ft.collection(ft.ft, `${userUid}-reccomendations`);
+  var q = ft.query(recom, ft.where("userUid", "==", `${profileId}`))
+  // const q_ = ft.query(col, ft.orderBy('timestamp', 'desc'))
+   ft.getDocs(q).then(async (val)=>{
+    // let dataArray = []
+    
+  await  val.docs.forEach(async(doc)=>{
+    console.log(doc.id)
+    var rec = ft.doc(ft.ft, `${userUid}-reccomendations/${doc.id}`)
+    await ft.deleteDoc(rec)
+    })
+  })
+
+    // const del = await ft.deleteDoc(q).then(()=>{
+    //   console.log('deleted')
+    // })
+    
+
+
+  res.cookie('profileId', profileId, {httpOnly:true})
+  res.redirect('/umk/follow/update')  
+  })
+  server.get('/umk/follow/update', async(req, res)=>{
+    console.log('president of the united states')
+    var profileId = req.cookies.profileId;
+    var userUid = req.cookies.userUid;
+  
+    var fref = db.ref(db.db, 'users/'+ profileId + '/followers/followers')
+    var accountRef =  db.ref(db.db, `users/${profileId}/followers` );
+    // res.cookie('profielIdFollowerCount', 'meetGelothra', {httpOnly: true, })
+     var dataA = []
+      
+     var lamar = await  db.onValue(fref, async(snapshot)=>{
+         var userInfo = await snapshot.val();
+         console.log(userInfo)
+        //  console.log(userInfo + '4')  
+        db.off(fref);
+         var dataJ = {followersC:userInfo};
+         var doing = dataA.push(dataJ)
+      var dataAJ =await dataA[0]
+      
+      var followerC =await dataAJ.followersC;
+      
+      var finalOne = followerC;
+      
+      await finalOne++;
+      
+  
+       await  db.set(db.ref(db.db, 'users/' + profileId + '/followers'), {
+        followers: finalOne
+       })
+       })    
+      await res.redirect('/umk/following/update')
+  })
+  server.get('/umk/following/update', async(req, res)=>{
+    console.log('i am too real');
+var profileId = req.cookies.profileId;
+  var userUid = req.cookies.userUid;
+  var fref = db.ref(db.db, 'users/'+ userUid + '/following/following');
+  var dataA = [];
+
+  var lamar = await db.onValue(fref,async (snapshot)=>{
+    var userInfo = await snapshot.val();
+    console.log(userInfo);
+    var dataJ = {followingC:userInfo};
+    var doing = dataA.push(dataJ);
+    var dataAJ = await dataA[0];
+    var followingC = await dataAJ.followingC;
+
+    var finalOne = followingC;
+    finalOne++;
+    await  db.set(db.ref(db.db, 'users/' + userUid + '/following'), {
+      following: finalOne
+     })
+     db.off(fref);
+    console.log(finalOne)
+  })
+  await res.redirect('/en/search')
+  })
+
+
+
+
+  server.get('/recom/remove/:id/:name', async(req, res)=>{
+    var profileId = req.params.id;
+    var userName = req.params.name
+    var userUid = req.cookies.userUid;
+
+    var recom = ft.collection(ft.ft, `${userUid}-reccomendations`);
+  var q = ft.query(recom, ft.where("userUid", "==", `${profileId}`))
+  // const q_ = ft.query(col, ft.orderBy('timestamp', 'desc'))
+   ft.getDocs(q).then(async (val)=>{
+    // let dataArray = []
+    
+  await  val.docs.forEach(async(doc)=>{
+    console.log(doc.id)
+    var rec = ft.doc(ft.ft, `${userUid}-reccomendations/${doc.id}`)
+    await ft.deleteDoc(rec)
+    })
+  })
+  await res.redirect('/en/recom')
+  })
+  server.get('/recom/follow/:id/:name', async(req, res)=>{
+    var profileId = req.params.id;
+    var userName = req.params.name
+    var userUid = req.cookies.userUid;
+    console.log(`userUid ${userUid}`)
+    console.log(`profileUid ${profileId}`)
+    // console.log(req.body)
+    // console.log(userUid)
+    // var userProfile = req.body;
+  //  var userName = userProfile.profileUserName;
+  //  var profileUid = userProfile.profileUid;
+  
+    const userData =  await db.push(db.ref(db.db, 'users/' + profileId + '/FollowersId/'), ({
+      userUid
+     }))
+      .catch((error) => {
+       const errorCode = error.code;
+       const errorMessage = error.message;
+     })
+     const profielData = await db.push(db.ref(db.db, `users/${userUid}/followingId/`), ({
+      profileUid:profileId,
+      profileUserName:userName
+     })).catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+    })
+
+    // var col = ft.collection(ft.ft, `${userUid}-reccomendations`)
+    // var rec = ft.doc(ft.ft, `${userUid}-reccomendations`)
+    // var q = ft.query(col, ft.where(`userUid`, '==', `${profileId}`) )
+
+    // ft.getDocs(q).then((val)=>{
+    //   console.log(...val.data())
+    // })
+
+
+    var recom = ft.collection(ft.ft, `${userUid}-reccomendations`);
+  var q = ft.query(recom, ft.where("userUid", "==", `${profileId}`))
+  // const q_ = ft.query(col, ft.orderBy('timestamp', 'desc'))
+   ft.getDocs(q).then(async (val)=>{
+    // let dataArray = []
+    
+  await  val.docs.forEach(async(doc)=>{
+    console.log(doc.id)
+    var rec = ft.doc(ft.ft, `${userUid}-reccomendations/${doc.id}`)
+    await ft.deleteDoc(rec)
+    })
+  })
+
+    // const del = await ft.deleteDoc(q).then(()=>{
+    //   console.log('deleted')
+    // })
+    
+
+
+  res.cookie('profileId', profileId, {httpOnly:true})
+  res.redirect('/recom/follow/update')
+  })
+  server.get('/recom/follow/update', async(req, res)=>{
+    console.log('president of the united states')
+    var profileId = req.cookies.profileId;
+    var userUid = req.cookies.userUid;
+  
+    var fref = db.ref(db.db, 'users/'+ profileId + '/followers/followers')
+    var accountRef =  db.ref(db.db, `users/${profileId}/followers` );
+    // res.cookie('profielIdFollowerCount', 'meetGelothra', {httpOnly: true, })
+     var dataA = []
+      
+     var lamar = await  db.onValue(fref, async(snapshot)=>{
+         var userInfo = await snapshot.val();
+         console.log(userInfo)
+        //  console.log(userInfo + '4')  
+        db.off(fref);
+         var dataJ = {followersC:userInfo};
+         var doing = dataA.push(dataJ)
+      var dataAJ =await dataA[0]
+      
+      var followerC =await dataAJ.followersC;
+      
+      var finalOne = followerC;
+      
+      await finalOne++;
+      
+  
+       await  db.set(db.ref(db.db, 'users/' + profileId + '/followers'), {
+        followers: finalOne
+       })
+       })    
+       res.redirect('/recom/following/update')
+  })
+  server.get('/recom/following/update', async(req, res)=>{
+
+  })
   
 
 server.post('/user/follow', async(req, res)=>{
@@ -697,7 +1006,29 @@ server.post('/user/follow', async(req, res)=>{
   })
    
 res.redirect('/user/follow/update')
- 
+console.log('i am too real');
+var profileId = req.cookies.profileId;
+  var userUid = req.cookies.userUid;
+  var fref = db.ref(db.db, 'users/'+ userUid + '/following/following');
+  var dataA = [];
+
+  var lamar = await db.onValue(fref,async (snapshot)=>{
+    var userInfo = await snapshot.val();
+    console.log(userInfo);
+    var dataJ = {followingC:userInfo};
+    var doing = dataA.push(dataJ);
+    var dataAJ = await dataA[0];
+    var followingC = await dataAJ.followingC;
+
+    var finalOne = followingC;
+    finalOne++;
+    await  db.set(db.ref(db.db, 'users/' + userUid + '/following'), {
+      following: finalOne
+     })
+     db.off(fref);
+    console.log(finalOne)
+  })
+  res.redirect('/en/recom')
 })
 
 server.get('/user/follow/update', async(req, res)=>{
@@ -755,7 +1086,7 @@ var profileId = req.cookies.profileId;
      db.off(fref);
     console.log(finalOne)
   })
-
+  // res.redirect('/en/recom')
 })
   
 server.get('/en/unfollow', async(req, res)=>{

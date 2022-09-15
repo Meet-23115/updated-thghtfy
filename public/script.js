@@ -1,5 +1,9 @@
 // const { doc } = require("firebase/firestore");
 
+// const { CONSTANTS } = require("@firebase/util");
+
+// const { doc } = require("firebase/firestore");
+
 
 
 
@@ -17,7 +21,10 @@ async function settingUp() {
 await fetch('/en/settingUp').then(async res=>{
 
 
-
+document.getElementById('skeletonUsername').remove()
+document.getElementById('skeletonFullname').remove()
+document.getElementById('skeletonFollowers').remove()
+document.getElementById('skeletonFollowing').remove()
 
 
     var data = await (res.json())
@@ -44,6 +51,7 @@ await fetch('/en/settingUp').then(async res=>{
 })
 
 await fetch('/thoughts').then(async res=>{
+  document.getElementById('skeletonPosts').remove()
     var data = await (res.json());
     console.log(data)
     var dataLength = data.length;
@@ -126,51 +134,119 @@ async function loading(){
  
   })
 
-  if('geolocation' in navigator){
-    await navigator.geolocation.getCurrentPosition(async(position)=>{
-      console.log(position.coords.latitude)
-      console.log(position.coords.longitude)
+  // if('geolocation' in navigator){
+  //   await navigator.geolocation.getCurrentPosition(async(position)=>{
+  //     console.log(position.coords.latitude)
+  //     console.log(position.coords.longitude)
 
-      var username = window.localStorage.getItem('username')
-      var lon = position.coords.longitude;
-      var lat = position.coords.latitude;
+  //     var username = window.localStorage.getItem('username')
+  //     var lon = position.coords.longitude;
+  //     var lat = position.coords.latitude;
       
-      var coords = {
-        lon:lon,
-        lat:lat,
-        username:username
-      }
-      fetch('/location', ({
-        headers:{
-          'Content-Type': 'application/json'
-        },
-        method:'post',
-        body:JSON.stringify(coords)
-      }))
-    })
-  } else{
-    console.log('no it is not')
-  }
+  //     var coords = {
+  //       lon:lon,
+  //       lat:lat,
+  //       username:username
+  //     }
+  //   })
+  // } else{
+  //   console.log('no it is not')
+  // }
 
-  function json(url) {
-    return fetch(url).then(res => res.json());
-  }
+
+  function getCoordintes() {
+    console.log('i aint fly')
+    var options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+    };
   
-  let apiKey = 'your_api_key';
-  json(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
-    console.log(data.ip);
-    console.log(data.city);
-    console.log(data.country_code);
-    // so many more properties
-  });
+    function success(pos) {
+        var crd = pos.coords;
+        var lat = crd.latitude.toString();
+        var lng = crd.longitude.toString();
+        var coordinates = [lat, lng];
+        console.log(`Latitude: ${lat}, Longitude: ${lng}`);
+        getCity(coordinates);
+        return;
   
-    setTimeout(function () {
+    }
+  
+    function error(err) {
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+  
+    navigator.geolocation.getCurrentPosition(success, error, options);
+}
+  
+// Step 2: Get city name
+function getCity(coordinates) {
+  console.log('flyyy')
+    var xhr = new XMLHttpRequest();
+    var lat = coordinates[0];
+    var lng = coordinates[1];
+  
+    // Paste your LocationIQ token below.
+    xhr.open('GET', "https://us1.locationiq.com/v1/reverse.php?key=pk.80b680017f519a9431e7b49e89f534c1&lat=" +
+    lat + "&lon=" + lng + "&format=json", true);
+    xhr.send();
+    xhr.onreadystatechange = processRequest;
+    xhr.addEventListener("readystatechange", processRequest, false);
+  
+    function processRequest(e) {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var response = JSON.parse(xhr.responseText);
+            var city = response.address.city;
+            var address = response.address;
+            // var username = window.localStorage.getItem('username')
+            window.sessionStorage.setItem('location', `${city}`)
+            console.log(city)
+            // console.log(address)
+           
+            return;
+        }
+    }
+}
+  
+  getCoordintes()
+
+  setTimeout(function(){
+    var location = window.sessionStorage.getItem('location');
+var username = window.localStorage.getItem('username');
+  
+var data = {
+  city:location,
+  username:username
+}
+
+console.log(`this is the city ${location}`);
+
+fetch('/location', ({
+  headers:{
+    'Content-Type': 'application/json'
+  },
+  method:'post',
+  body:JSON.stringify(data)
+}))
+
+fetch('/en/recom',  ({
+  headers:{
+    'Content-Type': 'application/json'
+  },
+  method:'post',
+  body:JSON.stringify(data)
+}))
+  }, 5000)
+  
+  
+    await setTimeout(function () {
       // after 5 seconds
       window.location = "/en/home";
-   }, 1000)
-
-
-  }
+   }, 5500)
+  //  console.log('still fetched')
+   
+}
   function expand(){
     // var Idiv = document.getElementById('home_header_link');
     var Ddiv = document.getElementById('home_header_logo_img');
@@ -192,18 +268,23 @@ async function loading(){
     nml.style.display = 'flex'
   }
 function umk(){
-  // fetch('/en/umk').then((res)=>{
-  //   var data = res.json();
-  //   console.log(data.object)
-  //   var array = []
-  //   array.push(data)
-  //   console.log(array.length)
-  // })
   console.log('working')
+  fetch('/')
 }
 function page(){
   window.location = '/en/user'
 }
+
+function closeSearch(){
+  console.log('close the search')
+  var holder = document.getElementById('search_input_holder');
+  holder.style.width = '100%'
+
+  document.getElementById('search_result_wrapper').remove()
+  document.getElementById('closeSearch').remove()
+}
+
+
  async function user(){
  await  fetch('/account/setup').then(async(res)=>{
     var data =await res.json();
@@ -546,7 +627,7 @@ function content(){
           var ins1Ba = document.createElement('a')
           ins1Ba.id = 'next_ins4'
           ins1Ba.className = 'next_ins'
-          ins1Ba.innerHTML = 'END'
+          ins1Ba.innerHTML = 'NEXT'
           ins1B.appendChild(ins1Ba)
       
           ins1.appendChild(ins1B)
@@ -555,9 +636,46 @@ function content(){
       
           var next = document.getElementById('next_ins4')
           next.addEventListener('click', ()=>{
+
             document.getElementById('newUserInsWrapper4').remove();
             shrink();
             window.localStorage.removeItem('newUser')
+            window.location = '/en/recom'
+
+            // window.localStorage.removeItem('newUser')
+
+            // var recomDiv = document.createElement('div');
+            // recomDiv.id = 'reccomedation'
+
+            // var div1 = document.createElement('div');
+            // div1.id = 'recomHeading';
+            // recomDiv.appendChild(div1);
+
+            // var h1 = document.createElement('h1');
+            // var text1 = 'RECCOMENDATION'
+            // var textnode1 = document.createTextNode(text1);
+            // h1.appendChild(textnode1);
+            // div1.appendChild(h1)
+
+            // var div2 = document.createElement('div');
+            // div2.id = 'recomWrapper'
+            // recomDiv.appendChild(div2);
+
+            
+
+            // document.getElementById('homePageBody').appendChild(recomDiv)
+
+
+            
+
+           
+            // var button = document.getElementById('recomEndB')
+            // button.addEventListener(('click'), ()=>{
+            //   document.getElementById('reccomedation').remove()
+            // })
+
+
+
 
           })
 
@@ -603,7 +721,7 @@ function content(){
   }
 
   fetch('/en/content').then(async(res)=>{
-
+    document.getElementById("homeSkeletonContainer").remove()
 
     var data =await res.json();
     var thght = data.thoughts;
@@ -623,6 +741,7 @@ function content(){
 
       var dp = document.createElement('img');
       dp.id = 'home_posts_dp';
+      dp.className = 'skeleton'
       dp.src = thghtDp;
       div2.appendChild(dp);
 
@@ -665,6 +784,291 @@ function content(){
 
   })
 
+}
+async function umk(){
+  fetch('/en/reccomend').then(async(res)=>{
+    document.getElementById('recomSkeletons').remove()
+             
+    // console.log(res.json())
+    var data =await res.json()
+    // console.log(data)
+    var recomends =await data.recomends
+    console.log(recomends)
+    if (recomends.length ==0){
+
+      var norecom = document.createElement('div')
+      norecom.innerHTML = 'NO RECCOMENDATIONS'
+      norecom.id = 'noRecomMessage'
+      document.getElementById('recomWrapper').appendChild(norecom)
+      
+      console.log('no recom')
+    }
+    else{
+      await recomends.forEach(element => {
+        var username = element.username;
+        var userUid = element.userUid;
+        // console.log(element)
+        var div1 = document.createElement('div');
+        div1.id = 'recom'
+  
+        var div2 = document.createElement('div');
+        div2.id = 'recomLeft';
+        
+  
+        var a1 = document.createElement('a')
+        a1.id = 'recomLink'
+        a1.href = `/search/${userUid}`
+  
+        var dp = document.createElement('img')
+        dp.id = 'recomDp'
+        dp.className = 'skeleton'
+        dp.src = `https://firebasestorage.googleapis.com/v0/b/thghtfy-32891.appspot.com/o/images%2FuserDp-${userUid}.png?alt=media&token=${userUid}` 
+        a1.appendChild(dp)
+        div2.appendChild(a1);
+        div1.appendChild(div2);
+  
+        var div3 = document.createElement('div')
+        div3.id = 'recomMiddle'
+  
+        var a2 = document.createElement('a')
+        a2.href = `/search/${userUid}`
+        a2.id = 'recomLink'
+  
+        var div4 = document.createElement('div')
+        div4.id= 'recomnames'
+  
+        var h1 = document.createElement('h1')
+        var text = document.createTextNode(username)
+        h1.appendChild(text)
+        h1.id = 'recomUsername'
+  
+        var h2 = document.createElement('h1')
+        h2.id = 'recomFullName'
+  
+        div4.appendChild(h1)
+        div4.appendChild(h2)
+        a2.appendChild(div4)
+        div3.appendChild(a2)
+        div1.appendChild(div3)
+  
+        var div5 = document.createElement('div')
+        div5.id = 'recomRight'
+  
+        var followLink = document.createElement('a')
+        followLink.id = 'followLink'
+        followLink.href = `/recom/follow/${userUid}/${username}`
+        followLink.setAttribute('onclick', 'return followedRecom()')
+  
+       
+  
+  
+        console.log(followLink)
+        var div6 = document.createElement('div')
+  
+  
+        div6.id = 'recomFollow'
+        div6.innerHTML = 'FOLLOW'
+  
+        followLink.appendChild(div6)
+        div5.appendChild(followLink)
+
+        var  removeLink = document.createElement('a')
+        removeLink.id = 'removeRecom'
+        removeLink.href = `/umk/remove/${userUid}/${username}`;
+
+        var recomRemove = document.createElement('div')
+        recomRemove.id = 'recomRemove'
+        recomRemove.innerHTML = 'X'
+
+        removeLink.appendChild(recomRemove)
+        div5.appendChild(removeLink)
+        
+        
+        div1.appendChild(div5)
+
+        removeLink.addEventListener('click', ()=>{
+          div1.remove();
+        })
+        followLink.addEventListener('click', ()=>{
+          div6.innerHTML = 'FOLLOWING'
+          window.location = '/en/search'
+          
+        })
+  
+        document.getElementById('recomWrapper').appendChild(div1)
+      });
+    }
+
+   
+
+
+
+    var end = document.createElement('div')
+    end.id= 'recomEnd'
+
+    var skip = document.createElement('a')
+    skip.id = 'recomEndB'
+    skip.setAttribute('href', '/en/home')
+    skip.innerHTML = 'SKIP'
+    console.log(skip)
+
+    // skip.onclick(()=>{
+    //   document.getElementById('reccomedation').remove()
+    // })
+
+    end.appendChild(skip)
+
+    document.getElementById('reccomedation').appendChild(end)
+
+     
+  })
+
+}
+
+async function recommend(){
+
+  fetch('/en/reccomend').then(async(res)=>{
+              
+             
+    // console.log(res.json())
+    var data =await res.json()
+    // console.log(data)
+    var recomends =await data.recomends
+    console.log(recomends)
+    if (recomends.length ==0){
+
+      var norecom = document.createElement('div')
+      norecom.innerHTML = 'NO RECCOMENDATIONS'
+      norecom.id = 'noRecomMessage'
+      document.getElementById('recomWrapper').appendChild(norecom)
+      
+      console.log('no recom')
+    }
+    else{
+      await recomends.forEach(element => {
+        var username = element.username;
+        var userUid = element.userUid;
+        // console.log(element)
+        var div1 = document.createElement('div');
+        div1.id = 'recom'
+  
+        var div2 = document.createElement('div');
+        div2.id = 'recomLeft';
+        
+  
+        var a1 = document.createElement('a')
+        a1.id = 'recomLink'
+        a1.href = `/search/${userUid}`
+  
+        var dp = document.createElement('img')
+        dp.id = 'recomDp'
+        dp.src = `https://firebasestorage.googleapis.com/v0/b/thghtfy-32891.appspot.com/o/images%2FuserDp-${userUid}.png?alt=media&token=${userUid}` 
+        a1.appendChild(dp)
+        div2.appendChild(a1);
+        div1.appendChild(div2);
+  
+        var div3 = document.createElement('div')
+        div3.id = 'recomMiddle'
+  
+        var a2 = document.createElement('a')
+        a2.href = `/search/${userUid}`
+        a2.id = 'recomLink'
+  
+        var div4 = document.createElement('div')
+        div4.id= 'recomnames'
+  
+        var h1 = document.createElement('h1')
+        var text = document.createTextNode(username)
+        h1.appendChild(text)
+        h1.id = 'recomUsername'
+  
+        var h2 = document.createElement('h1')
+        h2.id = 'recomFullName'
+  
+        div4.appendChild(h1)
+        div4.appendChild(h2)
+        a2.appendChild(div4)
+        div3.appendChild(a2)
+        div1.appendChild(div3)
+  
+        var div5 = document.createElement('div')
+        div5.id = 'recomRight'
+  
+        var followLink = document.createElement('a')
+        followLink.id = 'followLink'
+        followLink.href = `/recom/follow/${userUid}/${username}`
+        followLink.setAttribute('onclick', 'return followedRecom()')
+  
+       
+  
+  
+        console.log(followLink)
+        var div6 = document.createElement('div')
+  
+  
+        div6.id = 'recomFollow'
+        div6.innerHTML = 'FOLLOW'
+  
+        followLink.appendChild(div6)
+        div5.appendChild(followLink)
+
+        var  removeLink = document.createElement('a')
+        removeLink.id = 'removeRecom'
+        removeLink.href = `/recom/remove/${userUid}/${username}`;
+
+        var recomRemove = document.createElement('div')
+        recomRemove.id = 'recomRemove'
+        recomRemove.innerHTML = 'X'
+
+        removeLink.appendChild(recomRemove)
+        div5.appendChild(removeLink)
+        
+        
+        div1.appendChild(div5)
+
+        removeLink.addEventListener('click', ()=>{
+          div1.remove();
+        })
+        followLink.addEventListener('click', ()=>{
+          div6.innerHTML = 'FOLLOWING'
+          
+        })
+  
+        document.getElementById('recomWrapper').appendChild(div1)
+      });
+    }
+
+   
+
+
+
+    var end = document.createElement('div')
+    end.id= 'recomEnd'
+
+    var skip = document.createElement('a')
+    skip.id = 'recomEndB'
+    skip.setAttribute('href', '/en/home')
+    skip.innerHTML = 'SKIP'
+    console.log(skip)
+
+    // skip.onclick(()=>{
+    //   document.getElementById('reccomedation').remove()
+    // })
+
+    end.appendChild(skip)
+
+    document.getElementById('reccomedation').appendChild(end)
+
+     
+  })
+
+}
+
+
+async function recomEnd(){
+  window.location =await '/en/home'
+  console.log('button is pressed')
+  // window.localStorage.removeItem('newUser')
 }
 function logOut(){
   

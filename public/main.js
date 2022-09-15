@@ -271,7 +271,7 @@ function permission(){
   
   
   async function upLoadingThought(){
-    var uploadedThought = await document.getElementById('posted_thought').value;
+    var uploadedThought = await document.getElementById('posted_thought').value;  
     
     console.log(uploadedThought)
     var data = {uploadedThought}
@@ -293,9 +293,38 @@ function permission(){
 
 
   function search(){
+
+    var holder = document.getElementById('search_input_holder');
+    holder.style.width = '90%';
+    var xdiv = document.createElement('div')
+    xdiv.id = 'closeSearch';
+
+    var ximg = document.createElement('img')
+    ximg.setAttribute('height', '30px')
+    ximg.src = '/Resources/x-solid (1).svg'
+    ximg.setAttribute('onclick', 'return closeSearch()')
+
+    xdiv.appendChild(ximg)
+
+    document.getElementById('search_header').appendChild(xdiv)
+
+
+    var div1 = document.createElement('div')
+    div1.id = 'search_result_wrapper'
+
+    var div2 = document.createElement('div')
+    div2.id = 'search_results'
+    div1.appendChild(div2)
+
+    document.getElementById('searchResults').appendChild(div1)
+
+
+
     var input = document.getElementById('search_input');
     var history = document.getElementById('history');
     var userUsername = window.localStorage.getItem('username')
+
+
     // console.log(username)
    console.log(input)
       input.addEventListener('input',async ()=>{
