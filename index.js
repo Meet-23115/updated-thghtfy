@@ -54,8 +54,6 @@ server.use(cookieParser());
 
     
 
-
-   
 server.get('/', (req, res)=>{
     var userCookie = req.cookies;
     console.log(userCookie)
@@ -1028,7 +1026,7 @@ var profileId = req.cookies.profileId;
      db.off(fref);
     console.log(finalOne)
   })
-  res.redirect('/en/recom')
+  // res.redirect('/en/recom')
 })
 
 server.get('/user/follow/update', async(req, res)=>{

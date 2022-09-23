@@ -229,6 +229,7 @@ fetch('/location', ({
   method:'post',
   body:JSON.stringify(data)
 }))
+window.sessionStorage.removeItem('location')
 
 fetch('/en/recom',  ({
   headers:{
